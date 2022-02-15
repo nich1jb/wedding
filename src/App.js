@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import Sky from './components/Sky';
+import ShootingStars from './components/ShootingStars';
+import { useWindowDimensions } from './hooks';
 
-function App() {
+const App = () => {
+  const { height, width } = useWindowDimensions();
+
+  const getRandomX = () => {
+    return Math.floor(Math.random() * Math.floor(width)).toString();
+  };
+  const getRandomY = () => {
+    return Math.floor(Math.random() * Math.floor(height)).toString();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="App">
+      <Sky getRandomX={getRandomX} getRandomY={getRandomY} />
+      <ShootingStars getRandomX={getRandomX} getRandomY={getRandomY} />
     </div>
   );
-}
+};
 
 export default App;
