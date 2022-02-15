@@ -9,6 +9,7 @@ function getWindowDimensions() {
 }
 
 export default function useWindowDimensions() {
+  let resizeTimeout;
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
@@ -18,7 +19,12 @@ export default function useWindowDimensions() {
       setWindowDimensions(getWindowDimensions());
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        handleResize();
+      }, 100);
+    });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
