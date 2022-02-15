@@ -1,22 +1,17 @@
-import Sky from './components/Sky';
-import ShootingStars from './components/ShootingStars';
-import { useWindowDimensions } from './hooks';
+import styled from 'styled-components';
+import LoginForm from './pages/LoginForm';
+import Background from './components/Background';
+
+const AppContainer = styled.div`
+  height: 100vh;
+`;
 
 const App = () => {
-  const { height, width } = useWindowDimensions();
-
-  const getRandomX = () => {
-    return Math.floor(Math.random() * Math.floor(width)).toString();
-  };
-  const getRandomY = () => {
-    return Math.floor(Math.random() * Math.floor(height)).toString();
-  };
-
   return (
-    <div id="App">
-      <Sky getRandomX={getRandomX} getRandomY={getRandomY} />
-      <ShootingStars getRandomX={getRandomX} getRandomY={getRandomY} />
-    </div>
+    <AppContainer>
+      <LoginForm />
+      <Background />
+    </AppContainer>
   );
 };
 
