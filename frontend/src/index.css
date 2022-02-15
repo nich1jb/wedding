@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+
 body {
+  margin: 0px;
   background: linear-gradient(to right, #551b57 0%, #001761 100%);
+  font-family: 'Belleza', sans-serif;
+  color: white;
 }
