@@ -5,7 +5,7 @@ const apiRouter = require("./api");
 
 const app = express();
 app.use(cors());
-const port = 4000;
+const port = 8080;
 
 app.use(morgan("dev"));
 app.use("/api", apiRouter);

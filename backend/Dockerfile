@@ -19,3 +19,5 @@ COPY . ./
 CMD ["yarn", "start"]
 
 CMD node src/server.js
+
+EXPOSE 8080
