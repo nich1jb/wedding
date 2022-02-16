@@ -26,7 +26,6 @@ function detectMob() {
 }
 
 export default function useWindowDimensions() {
-  console.log('this is happening too many times');
   const isMobile = detectMob();
   let resizeTimeout;
   const [windowDimensions, setWindowDimensions] = useState(
