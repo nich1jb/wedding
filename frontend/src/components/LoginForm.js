@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import hash from 'object-hash';
 import PasswordEye from './PasswordEye';
+import { useAuth } from '../hooks';
 
 const Form = styled.form`
   height: 100%;
@@ -49,10 +52,20 @@ const SubmitButton = styled.input`
   font-size: 22px;
 `;
 
+const { REACT_APP_API_URL, REACT_APP_SALT } = process.env;
+
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [shouldShowPassword, setShouldShowPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    login().then(() => {
+      navigate('/register');
+    });
+  };
 
   const handleShowPassword = () => {
     setShouldShowPassword(prevValue => !prevValue);
@@ -62,17 +75,18 @@ const LoginForm = () => {
     const {
       target: { value },
     } = event;
-    setPassword(value);
+    const passwordHash = hash(value + REACT_APP_SALT);
+    setPassword(passwordHash);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    const { REACT_APP_API_URL } = process.env;
-
     fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
       .then(res => res.json())
       .then(result => {
+        // 7cfda772550ce36a50bc64db82a69f7cd0d80816
+        if (result) handleLogin();
         result ? setError('') : setError('Invalid Password');
       })
       .catch(e => console.log(e));
