@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import anime from 'animejs/lib/anime.es.js';
-import { useWindowDimensions } from '../hooks';
 
 const SkyContainer = styled.svg`
+  background: transparent;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -13,13 +13,6 @@ const SkyContainer = styled.svg`
 `;
 
 const Sky = ({ getRandomX, getRandomY }) => {
-  const [numOfStars, setNumOfStars] = useState(0);
-  const { height, width } = useWindowDimensions();
-
-  useEffect(() => {
-    setNumOfStars(Math.round(height / 10 + width / 10));
-  }, [height, width]);
-
   const randomRadius = () => {
     return Math.random() * 0.7 + 0.6;
   };
@@ -48,7 +41,7 @@ const Sky = ({ getRandomX, getRandomY }) => {
   }, []);
   return (
     <SkyContainer>
-      {[...Array(numOfStars)].map((_, y) => (
+      {[...Array(200)].map((_, y) => (
         <circle
           className="star"
           cx={getRandomX()}

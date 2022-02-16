@@ -1,18 +1,13 @@
-import styled from 'styled-components';
-import LoginForm from './pages/LoginForm';
-import Background from './components/Background';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 
-const AppContainer = styled.div`
-  height: 100vh;
-`;
-
-const App = () => {
-  return (
-    <AppContainer>
-      <LoginForm />
-      <Background />
-    </AppContainer>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Navigate replace to="/login" />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App;

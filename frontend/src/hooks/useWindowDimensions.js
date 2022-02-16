@@ -1,31 +1,59 @@
 import { useState, useEffect } from 'react';
 
-function getWindowDimensions() {
+const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
     height,
   };
+};
+
+function detectMob() {
+  const { userAgent } = navigator;
+  const toMatch = [
+    /Android/i,
+    /webOS/i,
+    /iPhone/i,
+    /iPad/i,
+    /iPod/i,
+    /BlackBerry/i,
+    /Windows Phone/i,
+  ];
+
+  return toMatch.some(toMatchItem => {
+    return userAgent.match(toMatchItem);
+  });
 }
 
 export default function useWindowDimensions() {
+  console.log('this is happening too many times');
+  const isMobile = detectMob();
   let resizeTimeout;
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
 
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       setWindowDimensions(getWindowDimensions());
-    }
+    };
 
-    window.addEventListener('resize', () => {
+    const setResizeTimeout = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         handleResize();
       }, 100);
-    });
-    return () => window.removeEventListener('resize', handleResize);
+    };
+
+    if (isMobile) {
+      window.addEventListener('orientationchange', setResizeTimeout);
+    } else {
+      window.addEventListener('resize', setResizeTimeout);
+    }
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
   }, []);
 
   return windowDimensions;

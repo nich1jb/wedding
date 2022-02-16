@@ -12,6 +12,7 @@ const BackgroundContainer = styled.div`
 
 const Background = () => {
   const { height, width } = useWindowDimensions();
+  // const { innerWidth: width, innerHeight: height } = window;
 
   const getRandomX = () => {
     return Math.floor(Math.random() * Math.floor(width)).toString();

@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   frontend:
     build: frontend
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-      - /Users/zoehiggins/.gcp/nick-and-zoe-wedding-2848b778b1ff.json:/app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json
+      - /Users/nickburnard/.gcp/nick-and-zoe-wedding-2848b778b1ff.json:/app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json
     environment:
-      SALT: 
+      SALT:
       GOOGLE_APPLICATION_CREDENTIALS: /app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json

@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PasswordEye from '../components/PasswordEye';
-
-const LoginFormContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
+import PasswordEye from './PasswordEye';
 
 const Form = styled.form`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const InputContainer = styled.div`
@@ -73,35 +68,36 @@ const LoginForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    fetch(`http://localhost:4000/api/password?attempt=${password}`)
+    const { REACT_APP_API_URL } = process.env;
+
+    fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
       .then(res => res.json())
       .then(result => {
         result ? setError('') : setError('Invalid Password');
-      });
+      })
+      .catch(e => console.log(e));
   };
 
   return (
-    <LoginFormContainer>
-      <Form onSubmit={handleSubmit}>
-        <InputContainer>
-          <PasswordEye
-            handleShowPassword={handleShowPassword}
-            shouldShowPassword={shouldShowPassword}
-          />
-          <TextInput
-            type={shouldShowPassword ? 'text' : 'password'}
-            name="password"
-            placeholder={'Enter password...'}
-            onChange={handleChange}
-            required
-          />
-        </InputContainer>
-        {error && <Error>{error}</Error>}
-        <InputContainer>
-          <SubmitButton type="submit" />
-        </InputContainer>
-      </Form>
-    </LoginFormContainer>
+    <Form onSubmit={handleSubmit}>
+      <InputContainer>
+        <PasswordEye
+          handleShowPassword={handleShowPassword}
+          shouldShowPassword={shouldShowPassword}
+        />
+        <TextInput
+          type={shouldShowPassword ? 'text' : 'password'}
+          name="password"
+          placeholder={'Enter password...'}
+          onChange={handleChange}
+          required
+        />
+      </InputContainer>
+      {error && <Error>{error}</Error>}
+      <InputContainer>
+        <SubmitButton type="submit" />
+      </InputContainer>
+    </Form>
   );
 };
 
