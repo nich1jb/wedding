@@ -3,7 +3,7 @@ env: flex
 
 env_variables:
   # insert SALT before deploy
-  SALT:
+  REACT_APP_SALT:
   REACT_APP_API_URL: https://wedding-backend-dot-nick-and-zoe-wedding.ts.r.appspot.com/
 
 manual_scaling:
