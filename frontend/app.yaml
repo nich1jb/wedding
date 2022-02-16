@@ -1,6 +1,10 @@
 runtime: custom
 env: flex
-service: wedding-frontend
+
+env_variables:
+  # insert SALT before deploy
+  SALT:
+  API_URL: https://wedding-backend-dot-nick-and-zoe-wedding.ts.r.appspot.com/
 
 manual_scaling:
   instances: 1
