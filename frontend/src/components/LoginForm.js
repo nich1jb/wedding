@@ -85,7 +85,6 @@ const LoginForm = () => {
     fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
       .then(res => res.json())
       .then(result => {
-        // 7cfda772550ce36a50bc64db82a69f7cd0d80816
         if (result) handleLogin();
         result ? setError('') : setError('Invalid Password');
       })
