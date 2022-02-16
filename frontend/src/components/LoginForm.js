@@ -52,6 +52,8 @@ const SubmitButton = styled.input`
   font-size: 22px;
 `;
 
+const { REACT_APP_API_URL, REACT_APP_SALT } = process.env;
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -73,14 +75,12 @@ const LoginForm = () => {
     const {
       target: { value },
     } = event;
-    const passwordHash = hash(value + process.env.REACT_APP_SALT);
+    const passwordHash = hash(value + REACT_APP_SALT);
     setPassword(passwordHash);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-
-    const { REACT_APP_API_URL } = process.env;
 
     fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
       .then(res => res.json())
