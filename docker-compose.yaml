@@ -7,6 +7,9 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      SALT:
+      API_URL: http://localhost:4000
   backend:
     build: backend
     ports:
@@ -14,3 +17,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - /Users/zoehiggins/.gcp/nick-and-zoe-wedding-2848b778b1ff.json:/app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json
+    environment:
+      SALT: 
+      GOOGLE_APPLICATION_CREDENTIALS: /app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json

@@ -8,7 +8,7 @@ app.use(cors());
 const port = 8080;
 
 app.use(morgan("dev"));
-app.use("/api", apiRouter);
+app.use("/", apiRouter);
 app.listen(port, () =>
   console.log(`Express server listening on port ${port}!`)
 );

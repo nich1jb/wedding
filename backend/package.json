@@ -5,6 +5,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "@google-cloud/secret-manager": "^3.11.0",
+    "object-hash": "^2.2.0"
   }
 }
