@@ -8,6 +8,7 @@
     "morgan": "^1.10.0",
     "@google-cloud/secret-manager": "^3.11.0",
     "object-hash": "^2.2.0",
-    "firebase-admin": "10.0.2"
+    "firebase-admin": "10.0.2",
+    "nodemailer": "^6.7.2"
   }
 }
