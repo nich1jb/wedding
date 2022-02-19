@@ -25,7 +25,7 @@ function detectMob() {
   });
 }
 
-export default function useWindowDimensions() {
+const useWindowDimensions = () => {
   const isMobile = detectMob();
   let resizeTimeout;
   const [windowDimensions, setWindowDimensions] = useState(
@@ -56,4 +56,6 @@ export default function useWindowDimensions() {
   }, []);
 
   return windowDimensions;
-}
+};
+
+export default useWindowDimensions;
