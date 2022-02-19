@@ -1,9 +1,15 @@
 const express = require('express');
 const hash = require('object-hash');
 const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
-const api = express.Router();
-const client = new SecretManagerServiceClient()
+const api = express();
+api.use(express.json());
+const client = new SecretManagerServiceClient();
+initializeApp({
+  credential: applicationDefault()
+});
 
 api.get('/password', (req, res) => {
   client.accessSecretVersion({
@@ -14,6 +20,19 @@ api.get('/password', (req, res) => {
     let expected = hash(secret + process.env.SALT)
     res.send((req.query.attempt === expected));
   })
+});
+
+api.post('/guests', function(req, res) {
+  let body = req.body;
+  const email = req.body.email;
+  delete body.email;
+
+  getFirestore().collection('guests').doc(email).set(body);
+
+  res.send({
+    'guest_data': req.body
+  });
+
 });
 
 module.exports = api;

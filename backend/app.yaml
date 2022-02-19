@@ -4,7 +4,7 @@ service: wedding-backend
 
 env_variables:
   # insert SALT before deploy
-  SALT: 
+  SALT:
 
 manual_scaling:
   instances: 1
