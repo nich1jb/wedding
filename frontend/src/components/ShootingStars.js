@@ -1,6 +1,6 @@
+import anime from 'animejs/lib/anime.es.js';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs/lib/anime.es.js';
 
 const ShootingStarsContainer = styled.div`
   margin: 0;

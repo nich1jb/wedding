@@ -3,5 +3,7 @@
   "semi": true,
   "singleQuote": true,
   "arrowParens": "avoid",
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSortSpecifiers": true
 }

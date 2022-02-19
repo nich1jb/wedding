@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginForm from '../components/LoginForm';
 import Background from '../components/Background';
+import LoginForm from '../components/LoginForm';
 import { useAuth } from '../hooks';
 
 const LoginPageContainer = styled.div`

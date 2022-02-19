@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
-import Sky from './Sky';
-import ShootingStars from './ShootingStars';
 import { useWindowDimensions } from '../hooks';
+import ShootingStars from './ShootingStars';
+import Sky from './Sky';
 
 const gradient = keyframes`
   0% {
