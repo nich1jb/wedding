@@ -22,7 +22,18 @@ const loadScript = (url, callback) => {
   document.getElementsByTagName('head')[0].appendChild(script);
 };
 
-const handleScriptLoad = (updateQuery, autoCompleteRef) => {
+const handleScriptLoad = (
+  updateQuery,
+  autoCompleteRef,
+  searchLocationSubmit
+) => {
+  const handlePlaceSelect = async updateQuery => {
+    const addressObject = autoComplete.getPlace();
+    const query = addressObject.formatted_address;
+    updateQuery(query);
+    searchLocationSubmit(addressObject);
+  };
+
   autoComplete = new window.google.maps.places.Autocomplete(
     autoCompleteRef.current
   );
@@ -32,14 +43,7 @@ const handleScriptLoad = (updateQuery, autoCompleteRef) => {
   );
 };
 
-const handlePlaceSelect = async updateQuery => {
-  const addressObject = autoComplete.getPlace();
-  const query = addressObject.formatted_address;
-  updateQuery(query);
-  console.log(addressObject);
-};
-
-const SearchLocationInput = ({ manualInput }) => {
+const SearchLocationInput = ({ manualInput, searchLocationSubmit }) => {
   const [manualAddress, setManualAddress] = useState(null);
   const [query, setQuery] = useState('');
   const autoCompleteRef = useRef(null);
@@ -51,7 +55,7 @@ const SearchLocationInput = ({ manualInput }) => {
   useEffect(() => {
     loadScript(
       `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-      () => handleScriptLoad(setQuery, autoCompleteRef)
+      () => handleScriptLoad(setQuery, autoCompleteRef, searchLocationSubmit)
     );
   }, []);
 

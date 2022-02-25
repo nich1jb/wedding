@@ -2,8 +2,8 @@ import hash from 'object-hash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PasswordEye from '../components/PasswordEye';
 import { ErrorBox, SubmitButton, TextBox } from '../components/common';
+import PasswordEye from '../components/icons/PasswordEye';
 import { useAuth } from '../hooks';
 
 const { REACT_APP_SALT, REACT_APP_API_URL } = process.env;

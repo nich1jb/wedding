@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
 import { ErrorBox, InputContainer, SubmitButton, TextBox } from './common';
@@ -38,13 +38,16 @@ const ManualAddressModal = ({
   close,
   manualAddressSubmit,
 }) => {
-  const [addressData, setAddressData] = useState(() => {
-    return formData
-      .map(field => field.name)
-      .reduce((previous, current) => ({ ...previous, [current]: '' }), {});
-  });
+  const initialAddressData = formData
+    .map(field => field.name)
+    .reduce((previous, current) => ({ ...previous, [current]: '' }), {});
+  const [addressData, setAddressData] = useState(initialAddressData);
   const [isInvalid, setIsInvalid] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setAddressData(initialAddressData);
+  }, [shouldShowModal]);
 
   const isFormValid = () => {
     for (let i = 0; i < formData.length; i++) {
