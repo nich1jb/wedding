@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Belleza&family=Quicksand&display=swap');
 
 body {
   margin: 0px;
-  font-family: 'Belleza', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: white;
 }

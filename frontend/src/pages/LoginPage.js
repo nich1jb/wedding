@@ -1,17 +1,42 @@
-import { useEffect } from 'react';
+import hash from 'object-hash';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Background from '../components/Background';
-import LoginForm from '../components/LoginForm';
+import PasswordEye from '../components/PasswordEye';
+import { ErrorBox, SubmitButton, TextBox } from '../components/common';
 import { useAuth } from '../hooks';
 
-const LoginPageContainer = styled.div`
+const { REACT_APP_SALT, REACT_APP_API_URL } = process.env;
+
+const Form = styled.form`
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InputContainer = styled.div`
+  position: relative;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+`;
+
+const PasswordInput = styled(TextBox)`
+  background: #ffffffd9;
+  border: 0;
+  border-radius: 100vw;
 `;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, login } = useAuth();
+  const [shouldShowPassword, setShouldShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -19,11 +44,58 @@ const LoginPage = () => {
     }
   }, []);
 
+  const handleLogin = () => {
+    login().then(() => {
+      navigate('/register');
+    });
+  };
+
+  const handleShowPassword = () => {
+    setShouldShowPassword(prevValue => !prevValue);
+  };
+
+  const handleChange = event => {
+    const {
+      target: { value },
+    } = event;
+    const passwordHash = hash(value + REACT_APP_SALT);
+    setPassword(passwordHash);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
+      .then(res => res.json())
+      .then(result => {
+        if (result) handleLogin();
+        result ? setError('') : setError('Invalid Password');
+      })
+      .catch(e => console.log(e));
+  };
+
   return (
-    <LoginPageContainer>
-      <LoginForm />
-      <Background />
-    </LoginPageContainer>
+    <Form onSubmit={handleSubmit}>
+      <InputContainer>
+        <PasswordEye
+          handleShowPassword={handleShowPassword}
+          shouldShowPassword={shouldShowPassword}
+        />
+        <PasswordInput
+          type={shouldShowPassword ? 'text' : 'password'}
+          name="password"
+          placeholder={'Enter password...'}
+          onChange={handleChange}
+          width={270}
+          shouldHaveShadow={false}
+          required
+        />
+      </InputContainer>
+      {error && <ErrorBox>{error}</ErrorBox>}
+      <InputContainer>
+        <SubmitButton type="submit" value="Enter" />
+      </InputContainer>
+    </Form>
   );
 };
 

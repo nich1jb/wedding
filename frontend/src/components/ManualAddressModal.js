@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
-import { ErrorBox, Label, SubmitButton, TextBox } from './common';
+import { ErrorBox, InputContainer, SubmitButton, TextBox } from './common';
 
 const ModalBody = styled(Modal.Body)`
   background-color: gray;
@@ -12,11 +12,6 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const formData = [
@@ -96,23 +91,21 @@ const ManualAddressModal = ({
     }
   };
 
-  console.log({ isInvalid });
-
   return (
     <Modal show={shouldShowModal} onHide={close}>
       <ModalBody>
         <FormContainer onSubmit={handleSubmit}>
           {formData &&
             formData.map((field, i) => {
+              const { label, name } = field;
               return (
-                <InputContainer key={i}>
-                  <Label htmlFor={field.name}>{field.label}</Label>
+                <InputContainer label={label} key={i}>
                   <TextBox
-                    name={field.name}
+                    name={name}
                     type="text"
                     onChange={handleChange}
-                    value={addressData[field.name]}
-                    isInvalid={errors[field.name]}
+                    value={addressData[name]}
+                    isInvalid={errors[name]}
                   />
                 </InputContainer>
               );

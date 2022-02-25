@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Background from './components/Background';
 import RequireAuth from './components/RequireAuth';
 import { AuthProvider } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
@@ -20,6 +21,7 @@ const App = () => (
         />
       </Routes>
     </AuthProvider>
+    <Background />
   </BrowserRouter>
 );
 

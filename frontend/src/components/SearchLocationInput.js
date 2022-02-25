@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-
-const TextBox = styled.input`
-  width: 300px;
-`;
+import { TextBox } from './common';
 
 let autoComplete;
 
