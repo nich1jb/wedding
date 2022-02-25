@@ -10,6 +10,7 @@ services:
     environment:
       REACT_APP_SALT:
       REACT_APP_API_URL: http://localhost:4000
+      REACT_APP_GOOGLE_API_KEY:
   backend:
     build: backend
     ports:

@@ -1,8 +1,9 @@
 const express = require('express');
 const hash = require('object-hash');
-const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
+const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { sendEmail } = require("./email");
 
 const api = express();
 api.use(express.json());
@@ -33,6 +34,20 @@ api.post('/guests', function(req, res) {
     'guest_data': req.body
   });
 
+});
+
+api.post('/email', (req, res) => {
+  client.accessSecretVersion({
+    name: "projects/765884841575/secrets/email-password/versions/latest",
+  })
+  .then(function (result) {
+    let secret = result[0].payload.data.toString();
+    let recipient = req.body.recipient;
+    sendEmail(recipient, secret)
+    res.send({
+      'email_sent_to': req.body.recipient
+    });
+  })
 });
 
 module.exports = api;
