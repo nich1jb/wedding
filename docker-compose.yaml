@@ -20,5 +20,4 @@ services:
       - /app/node_modules
     environment:
       SALT:
-      SMTP:
       GOOGLE_APPLICATION_CREDENTIALS: /app/.gcp/nick-and-zoe-wedding-2848b778b1ff.json
