@@ -2,11 +2,11 @@ var nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 
-var transporter = nodemailer.createTransport({
+var transporter = (pass) => nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
 		user: 'weddingzoeandnick@gmail.com',
-		pass: process.env.SMTP
+		pass: pass
 	}
 });
 
@@ -35,10 +35,10 @@ const mailOptions = (recipient, emailBody) => (
 	}
 );
 
-function sendEmail(recipient) {
+function sendEmail(recipient, pass) {
 	const filePath = path.join(__dirname, './email.html');
   	const source = fs.readFileSync(filePath, 'utf-8').toString();
-	transporter.sendMail(mailOptions(recipient, source), function(error, info){
+	transporter(pass).sendMail(mailOptions(recipient, source), function(error, info){
 		if (error) {
 		  console.log(error);
 		} else {
