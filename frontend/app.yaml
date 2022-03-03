@@ -1,5 +1,4 @@
-runtime: custom
-env: flex
+runtime: nodejs16
 
 env_variables:
   # insert SALT before deploy
@@ -7,10 +6,6 @@ env_variables:
   REACT_APP_API_URL: https://wedding-backend-dot-nick-and-zoe-wedding.ts.r.appspot.com
   # insert API key before deploy
   REACT_APP_GOOGLE_API_KEY:
-
-basic_scaling:
-  max_instances: 1
-resources:
-  cpu: 1
-  memory_gb: 0.5
-  disk_size_gb: 5
+automatic_scaling:
+  max_instances: 2
+instance_class: F2

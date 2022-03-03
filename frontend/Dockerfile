@@ -9,8 +9,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 ENV PORT 8080
 
 # install app dependencies
-COPY package.json ./
-COPY yarn.lock ./
+COPY package.json yarn.lock* ./
 RUN yarn --silent
 
 # add app

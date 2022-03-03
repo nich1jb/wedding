@@ -10,5 +10,8 @@
     "object-hash": "^2.2.0",
     "firebase-admin": "10.0.2",
     "nodemailer": "^6.7.2"
+  },
+  "scripts": {
+    "start": "node src/server.js"
   }
 }
