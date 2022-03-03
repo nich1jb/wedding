@@ -9,6 +9,7 @@ const SubmitButton = styled.input`
   cursor: pointer;
   background: #919eff;
   font-size: 22px;
+  margin-top: 15px;
 `;
 
 export default SubmitButton;

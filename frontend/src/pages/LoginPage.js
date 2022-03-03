@@ -2,7 +2,12 @@ import hash from 'object-hash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ErrorBox, SubmitButton, TextBox } from '../components/common';
+import {
+  ErrorBox,
+  InputContainer,
+  SubmitButton,
+  TextBox,
+} from '../components/common';
 import PasswordEye from '../components/icons/PasswordEye';
 import { useAuth } from '../hooks';
 
@@ -16,13 +21,12 @@ const Form = styled.form`
   justify-content: center;
 `;
 
-const InputContainer = styled.div`
+const PasswordContainer = styled(InputContainer)`
   position: relative;
-  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 15px;
+  padding-bottom: 15px;
 `;
 
 const PasswordInput = styled(TextBox)`
@@ -76,7 +80,7 @@ const LoginPage = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <InputContainer>
+      <PasswordContainer width={300} className={'password-container'}>
         <PasswordEye
           handleShowPassword={handleShowPassword}
           shouldShowPassword={shouldShowPassword}
@@ -90,11 +94,9 @@ const LoginPage = () => {
           shouldHaveShadow={false}
           required
         />
-      </InputContainer>
+      </PasswordContainer>
       {error && <ErrorBox>{error}</ErrorBox>}
-      <InputContainer>
-        <SubmitButton type="submit" value="Enter" />
-      </InputContainer>
+      <SubmitButton type="submit" value="Enter" width={270} />
     </Form>
   );
 };

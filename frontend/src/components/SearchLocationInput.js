@@ -43,13 +43,22 @@ const handleScriptLoad = (
   );
 };
 
-const SearchLocationInput = ({ manualInput, searchLocationSubmit }) => {
+const SearchLocationInput = ({
+  manualInput,
+  searchLocationSubmit,
+  name,
+  searchLocationChange,
+  isInvalid,
+}) => {
   const [manualAddress, setManualAddress] = useState(null);
   const [query, setQuery] = useState('');
   const autoCompleteRef = useRef(null);
 
   useEffect(() => {
-    setManualAddress(manualInput);
+    if (manualInput !== '') {
+      setManualAddress(manualInput);
+      searchLocationChange(manualInput);
+    }
   }, [manualInput]);
 
   useEffect(() => {
@@ -60,19 +69,23 @@ const SearchLocationInput = ({ manualInput, searchLocationSubmit }) => {
   }, []);
 
   const handleChange = event => {
+    const {
+      target: { value },
+    } = event;
     setManualAddress(null);
-    setQuery(event.target.value);
+    setQuery(value);
+    searchLocationChange(value);
   };
 
   return (
     <TextBox
       ref={autoCompleteRef}
       autoComplete="off"
-      name="address"
-      id="address"
+      name={name}
       onChange={handleChange}
       placeholder="Enter a City"
       value={manualAddress ? manualAddress : query}
+      isInvalid={isInvalid}
     />
   );
 };

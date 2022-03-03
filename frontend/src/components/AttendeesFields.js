@@ -14,7 +14,7 @@ const AttendeeContainer = styled.div`
   width: 100%;
 `;
 
-const AttendeesFields = ({ numOfAttendees, label, handleChange }) => {
+const AttendeesFields = ({ numOfAttendees, label, handleChange, errors }) => {
   const createAttendeesArray = () =>
     [...Array(numOfAttendees)].map((_, index) => (
       <AttendeeContainer key={index}>
@@ -25,14 +25,15 @@ const AttendeesFields = ({ numOfAttendees, label, handleChange }) => {
           label={`Name${index > 0 && label === 'Guest' ? ' (Optional)' : ''}`}
         >
           <TextBox
-            name={`name-${label.toLowerCase()}-${index}`}
+            name={`name${label}${index}`}
             type="text"
             onChange={handleChange}
+            isInvalid={errors ? errors[`name${label}${index}`] : false}
           />
         </InputContainer>
         <InputContainer label={'Dietaries (Optional)'}>
           <TextBox
-            name={`dietaries-${label.toLowerCase()}-${index}`}
+            name={`dietaries${label}${index}`}
             type="text"
             onChange={handleChange}
           />
