@@ -5,6 +5,7 @@ import ManualAddressModal from '../components/ManualAddressModal';
 import SearchLocationInput from '../components/SearchLocationInput';
 import {
   Dropdown,
+  ErrorBox,
   InputContainer,
   SubmitButton,
   TextBox,
@@ -16,6 +17,7 @@ const RegisterPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 `;
 
 const RegisterForm = styled.form`
@@ -25,10 +27,13 @@ const RegisterForm = styled.form`
   background: #fffbee;
   width: 650px;
   height: 85%;
+  max-height: 100vh;
   border-radius: 20px;
   color: #16043a;
   margin: 80px 15px;
   padding: 40px 30px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const ManualAddressLink = styled.span`
@@ -97,8 +102,9 @@ const RegisterPage = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    // console.log(isFormValid({ formFields: registerFormFields, errors }));
-    if (!isFormValid({ formFields: registerFormFields, errors })) {
+    if (isFormValid({ formFields: registerFormFields, errors })) {
+      setIsInvalid(false);
+    } else {
       setFormAsInvalid({
         setIsInvalid,
         setErrors,
@@ -191,6 +197,7 @@ const RegisterPage = () => {
           label={'Child'}
           handleChange={handleChange}
         />
+        {isInvalid && <ErrorBox>Some required fields are empty</ErrorBox>}
         <SubmitButton type="submit" value="Submit" width={300} />
       </RegisterForm>
     </RegisterPageContainer>
