@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
+import { formFields } from '../constants/formFields';
+import { isFormValid, setFormAsInvalid } from '../utils/';
 import { ErrorBox, InputContainer, SubmitButton, TextBox } from './common';
 
 const ModalBody = styled(Modal.Body)`
@@ -14,31 +16,14 @@ const FormContainer = styled.form`
   align-items: center;
 `;
 
-const formData = [
-  {
-    name: 'address',
-    label: 'Address',
-  },
-  {
-    name: 'city',
-    label: 'City',
-  },
-  {
-    name: 'postCode',
-    label: 'Post Code',
-  },
-  {
-    name: 'country',
-    label: 'Country',
-  },
-];
+const { manualAddressFormFields } = formFields;
 
 const ManualAddressModal = ({
   shouldShowModal,
   close,
   manualAddressSubmit,
 }) => {
-  const initialAddressData = formData
+  const initialAddressData = manualAddressFormFields
     .map(field => field.name)
     .reduce((previous, current) => ({ ...previous, [current]: '' }), {});
   const [addressData, setAddressData] = useState(initialAddressData);
@@ -49,33 +34,6 @@ const ManualAddressModal = ({
     setAddressData(initialAddressData);
   }, [shouldShowModal]);
 
-  const isFormValid = () => {
-    for (let i = 0; i < formData.length; i++) {
-      const fieldError = errors[formData[i].name];
-      if (fieldError || fieldError === undefined) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  const setFormAsInvalid = () => {
-    setIsInvalid(true);
-
-    const invalidFields = formData
-      .map(field => field.name)
-      .reduce(
-        (previous, current) => ({
-          ...previous,
-          [current]: addressData[current] === '',
-        }),
-        {}
-      );
-
-    setErrors(prev => ({ ...prev, ...invalidFields }));
-  };
-
   const handleChange = event => {
     const { value, name } = event.target;
     setAddressData(prevData => ({ ...prevData, [name]: value }));
@@ -85,12 +43,18 @@ const ManualAddressModal = ({
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (isFormValid()) {
+    if (isFormValid({ formFields: manualAddressFormFields, errors })) {
       setIsInvalid(false);
       manualAddressSubmit(addressData);
       close();
     } else {
-      setFormAsInvalid();
+      setFormAsInvalid({
+        setIsInvalid,
+        setErrors,
+        formFields: manualAddressFormFields,
+        formData: addressData,
+        formName: 'manualAddressFormFields',
+      });
     }
   };
 
@@ -98,8 +62,8 @@ const ManualAddressModal = ({
     <Modal show={shouldShowModal} onHide={close}>
       <ModalBody>
         <FormContainer onSubmit={handleSubmit}>
-          {formData &&
-            formData.map((field, i) => {
+          {manualAddressFormFields &&
+            manualAddressFormFields.map((field, i) => {
               const { label, name } = field;
               return (
                 <InputContainer label={label} key={i}>

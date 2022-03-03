@@ -3,12 +3,21 @@ import styled from 'styled-components';
 import AttendeesFields from '../components/AttendeesFields';
 import ManualAddressModal from '../components/ManualAddressModal';
 import SearchLocationInput from '../components/SearchLocationInput';
-import { Dropdown, InputContainer, TextBox } from '../components/common';
+import {
+  Dropdown,
+  ErrorBox,
+  InputContainer,
+  SubmitButton,
+  TextBox,
+} from '../components/common';
+import { formFields, formValidators } from '../constants/formFields';
+import { isFormValid, setFormAsInvalid } from '../utils';
 
 const RegisterPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 `;
 
 const RegisterForm = styled.form`
@@ -18,10 +27,13 @@ const RegisterForm = styled.form`
   background: #fffbee;
   width: 650px;
   height: 85%;
+  max-height: 100vh;
   border-radius: 20px;
   color: #16043a;
   margin: 80px 15px;
   padding: 40px 30px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const ManualAddressLink = styled.span`
@@ -33,6 +45,8 @@ const RegisterPage = () => {
   const [registerData, setRegisterData] = useState({});
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [manualAddress, setManualAddress] = useState('');
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleClose = () => setShouldShowModal(false);
   const handleShow = () => setShouldShowModal(true);
@@ -43,20 +57,71 @@ const RegisterPage = () => {
 
   const manualAddressSubmit = manualAddressData => {
     const { address, city, postCode, country } = manualAddressData;
-    setManualAddress(`${address}, ${city} ${postCode} ${country}`);
+    const addressString = `${address}, ${city} ${postCode} ${country}`;
+    setManualAddress(addressString);
+
+    setErrors(prevData => ({
+      ...prevData,
+      address: false,
+    }));
+  };
+
+  const searchLocationChange = value => {
+    if (!value) {
+      setErrors(prevData => ({
+        ...prevData,
+        address: true,
+      }));
+    }
   };
 
   const handleChange = event => {
     const { value, name } = event.target;
     setRegisterData(prevData => ({ ...prevData, [name]: value }));
+    if (formValidators.registerFormFields[name]) {
+      const validatorPattern = new RegExp(
+        formValidators.registerFormFields[name]
+      );
+      setErrors(prevData => ({
+        ...prevData,
+        [name]: !validatorPattern.test(value),
+      }));
+    }
   };
 
   const searchLocationSubmit = addressObject => {
     const { formatted_address } = addressObject;
     setRegisterData(prevData => ({ ...prevData, address: formatted_address }));
+
+    setErrors(prevData => ({
+      ...prevData,
+      address: false,
+    }));
   };
 
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    if (isFormValid({ formFields: registerFormFields, errors })) {
+      setIsInvalid(false);
+    } else {
+      setFormAsInvalid({
+        setIsInvalid,
+        setErrors,
+        formFields: registerFormFields,
+        formData: registerData,
+        formName: 'registerFormFields',
+      });
+    }
+  };
+
+  console.log(errors);
+
   const { guests, children } = registerData;
+
+  const { registerFormFields } = formFields;
+  const [emailField, addressField, guestsField, childrenField] =
+    registerFormFields;
 
   return (
     <RegisterPageContainer>
@@ -65,31 +130,35 @@ const RegisterPage = () => {
         close={handleClose}
         manualAddressSubmit={manualAddressSubmit}
       />
-      <RegisterForm>
-        <InputContainer label={'What is your email address?'}>
-          <TextBox name="email" type="email" onChange={handleChange} />
+      <RegisterForm onSubmit={handleSubmit}>
+        <InputContainer label={emailField.label}>
+          <TextBox
+            name={emailField.name}
+            type="email"
+            onChange={handleChange}
+            isInvalid={errors[emailField.name]}
+          />
         </InputContainer>
 
-        <InputContainer label={'What is your physical address?'}>
+        <InputContainer label={addressField.label}>
           <SearchLocationInput
             manualInput={manualAddress}
             searchLocationSubmit={searchLocationSubmit}
+            name={addressField.name}
+            searchLocationChange={searchLocationChange}
+            isInvalid={errors[addressField.name]}
           />
           <ManualAddressLink onClick={handleShow}>
             Enter address manually
           </ManualAddressLink>
         </InputContainer>
 
-        <InputContainer
-          label={
-            'How many guests will you be registering for the wedding? (Not including children)'
-          }
-        >
+        <InputContainer label={guestsField.label}>
           <Dropdown
-            name="guests"
-            id="guests"
+            name={guestsField.name}
             defaultValue={'default'}
             onChange={handleChange}
+            isInvalid={errors[guestsField.name]}
           >
             <option value="default" disabled>
               Please select
@@ -99,12 +168,12 @@ const RegisterPage = () => {
           </Dropdown>
         </InputContainer>
 
-        <InputContainer label={'How many children will you be registering?'}>
+        <InputContainer label={childrenField.label}>
           <Dropdown
-            name="children"
-            id="children"
+            name={childrenField.name}
             defaultValue={'default'}
             onChange={handleChange}
+            isInvalid={errors[childrenField.name]}
           >
             <option value="default" disabled>
               Please select
@@ -121,12 +190,15 @@ const RegisterPage = () => {
           numOfAttendees={Number(guests ? guests : 0)}
           label={'Guest'}
           handleChange={handleChange}
+          errors={errors}
         />
         <AttendeesFields
           numOfAttendees={Number(children ? children : 0)}
           label={'Child'}
           handleChange={handleChange}
         />
+        {isInvalid && <ErrorBox>Some required fields are empty</ErrorBox>}
+        <SubmitButton type="submit" value="Submit" width={300} />
       </RegisterForm>
     </RegisterPageContainer>
   );
