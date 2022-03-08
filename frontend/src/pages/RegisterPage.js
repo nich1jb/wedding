@@ -11,7 +11,7 @@ import {
   TextBox,
 } from '../components/common';
 import { formFields, formValidators } from '../constants/formFields';
-import { isFormValid, setFormAsInvalid } from '../utils';
+import { isFormValid, setFormAsInvalid, submitRegisterForm } from '../utils';
 
 const RegisterPageContainer = styled.div`
   display: flex;
@@ -104,6 +104,7 @@ const RegisterPage = () => {
 
     if (isFormValid({ formFields: registerFormFields, errors })) {
       setIsInvalid(false);
+      submitRegisterForm(registerData);
     } else {
       setFormAsInvalid({
         setIsInvalid,
@@ -114,8 +115,6 @@ const RegisterPage = () => {
       });
     }
   };
-
-  console.log(errors);
 
   const { guests, children } = registerData;
 

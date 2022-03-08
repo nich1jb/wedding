@@ -12,7 +12,6 @@ const setFormAsInvalid = ({
   const invalidFields = formFields
     .map(field => field.name)
     .reduce((previous, current) => {
-      console.log({ current }, formData[current]);
       const validatorPattern = new RegExp(formValidators[formName][current]);
       return {
         ...previous,
