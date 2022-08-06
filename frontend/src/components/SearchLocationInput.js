@@ -83,7 +83,7 @@ const SearchLocationInput = ({
       autoComplete="off"
       name={name}
       onChange={handleChange}
-      placeholder="Enter a City"
+      placeholder="Enter your address"
       value={manualAddress ? manualAddress : query}
       isInvalid={isInvalid}
     />
