@@ -75,7 +75,12 @@ const LoginPage = () => {
         if (result) handleLogin();
         result ? setError('') : setError('Invalid Password');
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.error(e);
+        setError(
+          'Error connecting to server. Please try again later (and tell Nick and Zoe because this should not have happened)'
+        );
+      });
   };
 
   return (
