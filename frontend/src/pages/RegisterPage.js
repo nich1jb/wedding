@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AttendeesFields from '../components/AttendeesFields';
 import ManualAddressModal from '../components/ManualAddressModal';
@@ -42,6 +43,7 @@ const ManualAddressLink = styled.span`
 `;
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({});
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [manualAddress, setManualAddress] = useState('');
@@ -105,6 +107,7 @@ const RegisterPage = () => {
     if (isFormValid({ formFields: registerFormFields, errors })) {
       setIsInvalid(false);
       submitRegisterForm(registerData);
+      navigate('/submit');
     } else {
       setFormAsInvalid({
         setIsInvalid,
