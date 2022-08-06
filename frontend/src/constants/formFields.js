@@ -30,7 +30,7 @@ export const formFields = {
     {
       name: 'guests',
       label:
-        'How many guests will you be registering for the wedding? (Not including children)',
+        'How many guests (including yourself) will you be registering for the wedding? (Not including children)',
     },
     {
       name: 'children',
