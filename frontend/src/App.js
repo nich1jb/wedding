@@ -4,6 +4,7 @@ import RequireAuth from './components/RequireAuth';
 import { AuthProvider } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import SubmitPage from './pages/SubmitPage';
 
 const App = () => (
   <BrowserRouter>
@@ -16,6 +17,14 @@ const App = () => (
           element={
             <RequireAuth>
               <RegisterPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/submit"
+          element={
+            <RequireAuth>
+              <SubmitPage />
             </RequireAuth>
           }
         />
