@@ -30,6 +30,7 @@ const PasswordContainer = styled(InputContainer)`
 `;
 
 const PasswordInput = styled(TextBox)`
+  padding-right: 45px;
   background: #ffffffd9;
   border: 0;
   border-radius: 100vw;
