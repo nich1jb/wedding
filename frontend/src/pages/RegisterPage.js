@@ -12,13 +12,14 @@ import {
   TextBox,
 } from '../components/common';
 import { formFields, formValidators } from '../constants/formFields';
+import { useWindowDimensions } from '../hooks';
 import { isFormValid, setFormAsInvalid, submitRegisterForm } from '../utils';
 
 const RegisterPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: ${({ viewportHeight }) => `${viewportHeight}px`};
 `;
 
 const RegisterForm = styled.form`
@@ -28,7 +29,7 @@ const RegisterForm = styled.form`
   background: #fffbee;
   width: 650px;
   height: 85%;
-  max-height: 100vh;
+  max-height: 100%;
   border-radius: 20px;
   color: #16043a;
   margin: 80px 15px;
@@ -43,6 +44,7 @@ const ManualAddressLink = styled.span`
 `;
 
 const RegisterPage = () => {
+  const { height } = useWindowDimensions();
   const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({});
   const [shouldShowModal, setShouldShowModal] = useState(false);
@@ -126,7 +128,7 @@ const RegisterPage = () => {
     registerFormFields;
 
   return (
-    <RegisterPageContainer>
+    <RegisterPageContainer viewportHeight={height}>
       <ManualAddressModal
         shouldShowModal={shouldShowModal}
         close={handleClose}
