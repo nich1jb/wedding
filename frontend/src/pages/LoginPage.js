@@ -9,12 +9,12 @@ import {
   TextBox,
 } from '../components/common';
 import PasswordEye from '../components/icons/PasswordEye';
-import { useAuth } from '../hooks';
+import { useAuth, useWindowDimensions } from '../hooks';
 
 const { REACT_APP_SALT, REACT_APP_API_URL } = process.env;
 
 const Form = styled.form`
-  height: 100vh;
+  height: ${({ viewportHeight }) => `${viewportHeight}px`};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,10 +36,12 @@ const PasswordInput = styled(TextBox)`
 `;
 
 const LoginPage = () => {
+  const { height } = useWindowDimensions();
   const navigate = useNavigate();
   const { isAuthenticated, login } = useAuth();
   const [shouldShowPassword, setShouldShowPassword] = useState(false);
   const [password, setPassword] = useState('');
+  const [passwordFieldValue, setPasswordFieldValue] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -62,6 +64,8 @@ const LoginPage = () => {
     const {
       target: { value },
     } = event;
+    console.log('called');
+    setPasswordFieldValue(value);
     const passwordHash = hash(value + REACT_APP_SALT);
     setPassword(passwordHash);
   };
@@ -72,8 +76,14 @@ const LoginPage = () => {
     fetch(`${REACT_APP_API_URL}/password?attempt=${password}`)
       .then(res => res.json())
       .then(result => {
-        if (result) handleLogin();
-        result ? setError('') : setError('Invalid Password');
+        if (result) {
+          setError('');
+          handleLogin();
+        } else {
+          setError('Invalid Password');
+          setPassword('');
+          setPasswordFieldValue('');
+        }
       })
       .catch(e => {
         console.error(e);
@@ -84,7 +94,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} viewportHeight={height}>
       <PasswordContainer width={300} className={'password-container'}>
         <PasswordEye
           handleShowPassword={handleShowPassword}
@@ -96,6 +106,7 @@ const LoginPage = () => {
           placeholder={'Enter password...'}
           onChange={handleChange}
           width={270}
+          value={passwordFieldValue}
           shouldHaveShadow={false}
           required
         />

@@ -4,7 +4,7 @@ const TextBox = styled.input`
   border: 2px solid;
   outline: none;
   font-size: 15px;
-  padding: 10px 80px 10px 30px;
+  padding: 10px 30px 10px 30px;
   border-color: ${({ isInvalid }) => (isInvalid ? 'red' : 'transparent')};
   border-radius: 15px;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
